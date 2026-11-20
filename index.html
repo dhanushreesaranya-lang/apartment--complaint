@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apartment Maintenance & Resident Complaint Management System</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .tab-active { border-bottom: 2px solid #2563eb; color: #2563eb; font-weight: 600; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Header Banner -->
+  <header class="bg-gradient-to-r from-blue-900 via-indigo-900 to-blue-800 text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row justify-between items-center gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-xl shadow">
+          <i class="fa-solid fa-building-user"></i>
+        </div>
+        <div>
+          <h1 class="text-lg md:text-xl font-bold tracking-tight">Apartment Maintenance & Resident Complaint Portal</h1>
+          <p class="text-xs text-blue-200">Velalar College of Engineering and Technology (Autonomous) | Scenario 18</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> System Operational
+        </span>
+        <a href="https://github.com/dhanushreesaranya-lang/apartment--complaint" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/10 hover:bg-white/20 transition text-white border border-white/20">
+          <i class="fa-brands fa-github text-sm"></i> GitHub Repo
+        </a>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-white border-b border-slate-200 text-slate-600">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto space-x-6 text-sm">
+        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="py-3 px-1 border-b-2 border-transparent hover:text-blue-600 transition tab-active flex items-center gap-2">
+          <i class="fa-solid fa-chart-pie"></i> Dashboard & Analytics
+        </button>
+        <button onclick="switchTab('apartments')" id="tab-apartments" class="py-3 px-1 border-b-2 border-transparent hover:text-blue-600 transition flex items-center gap-2">
+          <i class="fa-solid fa-hotel"></i> Apartment Directory
+        </button>
+        <button onclick="switchTab('residents')" id="tab-residents" class="py-3 px-1 border-b-2 border-transparent hover:text-blue-600 transition flex items-center gap-2">
+          <i class="fa-solid fa-users"></i> Resident Profiles
+        </button>
+        <button onclick="switchTab('payments')" id="tab-payments" class="py-3 px-1 border-b-2 border-transparent hover:text-blue-600 transition flex items-center gap-2">
+          <i class="fa-solid fa-file-invoice-dollar"></i> Maintenance & Dues
+        </button>
+        <button onclick="switchTab('complaints')" id="tab-complaints" class="py-3 px-1 border-b-2 border-transparent hover:text-blue-600 transition flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation"></i> Grievances & Tickets
+        </button>
+        <button onclick="switchTab('docs')" id="tab-docs" class="py-3 px-1 border-b-2 border-transparent hover:text-blue-600 transition flex items-center gap-2">
+          <i class="fa-solid fa-book-open"></i> Project Documentation
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- 1. DASHBOARD & EDA CHARTS SECTION -->
+    <section id="section-dashboard" class="space-y-6">
+      <!-- KPI Stats Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-building"></i>
+          </div>
+          <div>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Units</p>
+            <h3 class="text-2xl font-bold text-slate-900 mt-0.5">16 <span class="text-xs font-normal text-slate-400">across 3 Blocks</span></h3>
+            <span class="text-xs text-emerald-600 font-medium"><i class="fa-solid fa-check-circle"></i> 13 Occupied (81.2%)</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-user-group"></i>
+          </div>
+          <div>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Residents</p>
+            <h3 class="text-2xl font-bold text-slate-900 mt-0.5">13 <span class="text-xs font-normal text-slate-400">Profiles</span></h3>
+            <span class="text-xs text-indigo-600 font-medium">9 Owners | 4 Tenants</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-money-bill-wave"></i>
+          </div>
+          <div>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Pending Dues</p>
+            <h3 class="text-2xl font-bold text-amber-600 mt-0.5">₹16,500</h3>
+            <span class="text-xs text-slate-500 font-medium">5 Pending | 4 Overdue Bills</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl">
+            <i class="fa-solid fa-ticket"></i>
+          </div>
+          <div>
+            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Active Complaints</p>
+            <h3 class="text-2xl font-bold text-rose-600 mt-0.5">5 <span class="text-xs font-normal text-slate-400">Active</span></h3>
+            <span class="text-xs text-emerald-600 font-medium"><i class="fa-solid fa-check"></i> 10 Resolved (66.7%)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- EDA Visualizations Gallery -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-slate-100 pb-4">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-chart-line text-blue-600"></i> Exploratory Data Analysis & Visualizations
+            </h2>
+            <p class="text-xs text-slate-500">Course: 25ITC31 - Foundations of Data Science (Matplotlib & Seaborn Analytics)</p>
+          </div>
+          <span class="text-xs px-2.5 py-1 bg-blue-50 text-blue-700 font-medium rounded-lg border border-blue-100">
+            Automated Python Pipeline
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+          <!-- Chart 1 -->
+          <div class="group border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition bg-slate-50">
+            <div class="p-3 bg-white border-b border-slate-200">
+              <h4 class="text-sm font-semibold text-slate-800">1. Maintenance Payment Status</h4>
+              <p class="text-xs text-slate-500">Donut chart of Paid, Pending & Overdue billing</p>
+            </div>
+            <img src="python_eda/output_visualizations/01_payment_status_distribution.png" alt="Payment Status Distribution" class="w-full h-56 object-contain p-2 group-hover:scale-105 transition duration-300">
+          </div>
+
+          <!-- Chart 2 -->
+          <div class="group border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition bg-slate-50">
+            <div class="p-3 bg-white border-b border-slate-200">
+              <h4 class="text-sm font-semibold text-slate-800">2. Complaints by Facility Category</h4>
+              <p class="text-xs text-slate-500">Frequency breakdown across Water, Lift, Power, etc.</p>
+            </div>
+            <img src="python_eda/output_visualizations/02_complaints_by_category.png" alt="Complaints by Category" class="w-full h-56 object-contain p-2 group-hover:scale-105 transition duration-300">
+          </div>
+
+          <!-- Chart 3 -->
+          <div class="group border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition bg-slate-50">
+            <div class="p-3 bg-white border-b border-slate-200">
+              <h4 class="text-sm font-semibold text-slate-800">3. Resolution Lifecycle Breakdown</h4>
+              <p class="text-xs text-slate-500">Stacked count of Open, In Progress & Resolved</p>
+            </div>
+            <img src="python_eda/output_visualizations/03_complaint_status_stacked.png" alt="Complaint Status Stacked" class="w-full h-56 object-contain p-2 group-hover:scale-105 transition duration-300">
+          </div>
+
+          <!-- Chart 4 -->
+          <div class="group border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition bg-slate-50">
+            <div class="p-3 bg-white border-b border-slate-200">
+              <h4 class="text-sm font-semibold text-slate-800">4. Monthly Fee Collection Trend</h4>
+              <p class="text-xs text-slate-500">Billed demand vs realized cash flow (Q1 2026)</p>
+            </div>
+            <img src="python_eda/output_visualizations/04_monthly_collection_trend.png" alt="Monthly Collection Trend" class="w-full h-56 object-contain p-2 group-hover:scale-105 transition duration-300">
+          </div>
+
+          <!-- Chart 5 -->
+          <div class="group border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition bg-slate-50">
+            <div class="p-3 bg-white border-b border-slate-200">
+              <h4 class="text-sm font-semibold text-slate-800">5. Complaint Turnaround Duration</h4>
+              <p class="text-xs text-slate-500">Box plot variance of resolution days per facility</p>
+            </div>
+            <img src="python_eda/output_visualizations/05_resolution_time_boxplot.png" alt="Resolution Time Boxplot" class="w-full h-56 object-contain p-2 group-hover:scale-105 transition duration-300">
+          </div>
+
+          <!-- Chart 6 -->
+          <div class="group border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition bg-slate-50">
+            <div class="p-3 bg-white border-b border-slate-200">
+              <h4 class="text-sm font-semibold text-slate-800">6. Facility Issue Density Heatmap</h4>
+              <p class="text-xs text-slate-500">Block vs Category cross-tabulation hot-spots</p>
+            </div>
+            <img src="python_eda/output_visualizations/06_complaint_block_heatmap.png" alt="Complaint Block Heatmap" class="w-full h-56 object-contain p-2 group-hover:scale-105 transition duration-300">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. APARTMENT DIRECTORY SECTION -->
+    <section id="section-apartments" class="space-y-6 hidden">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900">Apartment Inventory & Units Directory</h2>
+            <p class="text-xs text-slate-500">Overview of all physical units, layouts, and occupancy status</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <select id="filter-block" onchange="filterApartments()" class="text-xs border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 font-medium">
+              <option value="ALL">All Blocks</option>
+              <option value="Block A">Block A</option>
+              <option value="Block B">Block B</option>
+              <option value="Block C">Block C</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm">
+            <thead>
+              <tr class="bg-slate-50 text-slate-500 uppercase tracking-wider text-[11px] border-b border-slate-200">
+                <th class="py-3 px-4">Unit ID</th>
+                <th class="py-3 px-4">Block</th>
+                <th class="py-3 px-4">Floor</th>
+                <th class="py-3 px-4">Unit Type</th>
+                <th class="py-3 px-4">Area (sq.ft)</th>
+                <th class="py-3 px-4">Occupancy Status</th>
+              </tr>
+            </thead>
+            <tbody id="apartment-rows" class="divide-y divide-slate-100">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. RESIDENT MANAGEMENT SECTION -->
+    <section id="section-residents" class="space-y-6 hidden">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900">Resident Profiles Directory</h2>
+            <p class="text-xs text-slate-500">Contact information, tenancy type, and apartment assignments</p>
+          </div>
+          <input type="text" id="search-resident" onkeyup="searchResidents()" placeholder="Search resident name or unit..." class="text-xs border border-slate-300 rounded-lg px-3 py-2 w-full sm:w-64">
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm">
+            <thead>
+              <tr class="bg-slate-50 text-slate-500 uppercase tracking-wider text-[11px] border-b border-slate-200">
+                <th class="py-3 px-4">Resident ID</th>
+                <th class="py-3 px-4">Full Name</th>
+                <th class="py-3 px-4">Email</th>
+                <th class="py-3 px-4">Phone</th>
+                <th class="py-3 px-4">Assigned Unit</th>
+                <th class="py-3 px-4">Tenancy</th>
+                <th class="py-3 px-4">Move-in Date</th>
+              </tr>
+            </thead>
+            <tbody id="resident-rows" class="divide-y divide-slate-100">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. MAINTENANCE & DUES SECTION -->
+    <section id="section-payments" class="space-y-6 hidden">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900">Maintenance Fee Billing & Payment Tracking</h2>
+            <p class="text-xs text-slate-500">Billing cycles, dues accounting, payment modes, and invoice states</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="filterPayments('ALL')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-50 text-blue-700">All</button>
+            <button onclick="filterPayments('Pending')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-50 text-amber-700">Pending</button>
+            <button onclick="filterPayments('Overdue')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-rose-50 text-rose-700">Overdue</button>
+            <button onclick="filterPayments('Paid')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-50 text-emerald-700">Paid</button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm">
+            <thead>
+              <tr class="bg-slate-50 text-slate-500 uppercase tracking-wider text-[11px] border-b border-slate-200">
+                <th class="py-3 px-4">Invoice ID</th>
+                <th class="py-3 px-4">Unit</th>
+                <th class="py-3 px-4">Month</th>
+                <th class="py-3 px-4">Due Amount</th>
+                <th class="py-3 px-4">Paid Amount</th>
+                <th class="py-3 px-4">Due Date</th>
+                <th class="py-3 px-4">Payment Date</th>
+                <th class="py-3 px-4">Mode</th>
+                <th class="py-3 px-4">Status</th>
+              </tr>
+            </thead>
+            <tbody id="payment-rows" class="divide-y divide-slate-100">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. COMPLAINT & GRIEVANCES SECTION -->
+    <section id="section-complaints" class="space-y-6 hidden">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900">Resident Grievance & Complaint Lifecycle</h2>
+            <p class="text-xs text-slate-500">Service tickets, priority escalations, staff assignment, and resolution audit</p>
+          </div>
+          <button onclick="openComplaintModal()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
+            <i class="fa-solid fa-plus"></i> Lodge New Complaint
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm">
+            <thead>
+              <tr class="bg-slate-50 text-slate-500 uppercase tracking-wider text-[11px] border-b border-slate-200">
+                <th class="py-3 px-4">Ticket ID</th>
+                <th class="py-3 px-4">Unit</th>
+                <th class="py-3 px-4">Category</th>
+                <th class="py-3 px-4">Priority</th>
+                <th class="py-3 px-4">Description</th>
+                <th class="py-3 px-4">Logged Date</th>
+                <th class="py-3 px-4">Assigned Staff</th>
+                <th class="py-3 px-4">Status</th>
+              </tr>
+            </thead>
+            <tbody id="complaint-rows" class="divide-y divide-slate-100">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. DOCUMENTATION & SYLLABUS SECTION -->
+    <section id="section-docs" class="space-y-6 hidden">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-6">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">Academic Project Deliverables & Syllabus Mapping</h2>
+          <p class="text-xs text-slate-500">Project-Based Assessment for VCET Information Technology (Odd Sem 2026-27)</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl border border-blue-100 bg-blue-50/50">
+            <h4 class="text-sm font-bold text-blue-900 flex items-center gap-2">
+              <i class="fa-solid fa-database text-blue-600"></i> 25ITT31 - Database Management Systems
+            </h4>
+            <p class="text-xs text-slate-600 mt-1">E-R Model, Relational Schema in BCNF, ACID transactions, complex SQL queries, and views.</p>
+            <a href="https://github.com/dhanushreesaranya-lang/apartment--complaint/blob/main/docs/Database_Design_and_Normalization.md" target="_blank" class="inline-block mt-3 text-xs font-semibold text-blue-700 hover:underline">
+              View ER & Normalization Docs &rarr;
+            </a>
+          </div>
+
+          <div class="p-4 rounded-xl border border-indigo-100 bg-indigo-50/50">
+            <h4 class="text-sm font-bold text-indigo-900 flex items-center gap-2">
+              <i class="fa-brands fa-java text-indigo-600"></i> 25ITT32 - Java Programming
+            </h4>
+            <p class="text-xs text-slate-600 mt-1">OOP hierarchy, DAO pattern, JDBC SQLite connection singleton, custom exceptions, and Java Streams.</p>
+            <a href="https://github.com/dhanushreesaranya-lang/apartment--complaint/tree/main/src/com/apartment" target="_blank" class="inline-block mt-3 text-xs font-semibold text-indigo-700 hover:underline">
+              View Java Source Code &rarr;
+            </a>
+          </div>
+
+          <div class="p-4 rounded-xl border border-emerald-100 bg-emerald-50/50">
+            <h4 class="text-sm font-bold text-emerald-900 flex items-center gap-2">
+              <i class="fa-solid fa-code-merge text-emerald-600"></i> 25ITT33 - Software Engineering
+            </h4>
+            <p class="text-xs text-slate-600 mt-1">IEEE 830 SRS Document, Use Case Diagram, Class Diagram, 3-Tier Architecture, and 15 Pass Test Cases.</p>
+            <a href="https://github.com/dhanushreesaranya-lang/apartment--complaint/blob/main/docs/SRS_Document.md" target="_blank" class="inline-block mt-3 text-xs font-semibold text-emerald-700 hover:underline">
+              View SRS & Design Diagrams &rarr;
+            </a>
+          </div>
+
+          <div class="p-4 rounded-xl border border-purple-100 bg-purple-50/50">
+            <h4 class="text-sm font-bold text-purple-900 flex items-center gap-2">
+              <i class="fa-solid fa-chart-column text-purple-600"></i> 25ITC31 - Foundations of Data Science
+            </h4>
+            <p class="text-xs text-slate-600 mt-1">Pandas & NumPy data cleaning, feature engineering, Matplotlib & Seaborn visualizations, and Jupyter Notebook.</p>
+            <a href="https://github.com/dhanushreesaranya-lang/apartment--complaint/tree/main/python_eda" target="_blank" class="inline-block mt-3 text-xs font-semibold text-purple-700 hover:underline">
+              View Python EDA & Notebook &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4">
+      <p class="font-medium text-slate-700">Velalar College of Engineering and Technology (Autonomous), Erode – 638012</p>
+      <p class="mt-1">Department of Information Technology | Scenario 18: Apartment Maintenance & Resident Complaint Management System</p>
+      <p class="mt-2 text-slate-400">Class: 25IT3A & 25IT3B | Register No.: 18, 48, 78, 108</p>
+    </div>
+  </footer>
+
+  <!-- Mock Data & Controller Script -->
+  <script>
+    const apartments = [
+      { id: "A-101", block: "Block A", floor: 1, type: "2BHK", sqft: 1200, status: "Occupied" },
+      { id: "A-102", block: "Block A", floor: 1, type: "3BHK", sqft: 1650, status: "Occupied" },
+      { id: "A-201", block: "Block A", floor: 2, type: "2BHK", sqft: 1200, status: "Occupied" },
+      { id: "A-202", block: "Block A", floor: 2, type: "3BHK", sqft: 1650, status: "Occupied" },
+      { id: "A-301", block: "Block A", floor: 3, type: "Penthouse", sqft: 2400, status: "Occupied" },
+      { id: "A-302", block: "Block A", floor: 3, type: "2BHK", sqft: 1200, status: "Vacant" },
+      { id: "B-101", block: "Block B", floor: 1, type: "1BHK", sqft: 850, status: "Occupied" },
+      { id: "B-102", block: "Block B", floor: 1, type: "2BHK", sqft: 1250, status: "Occupied" },
+      { id: "B-201", block: "Block B", floor: 2, type: "2BHK", sqft: 1250, status: "Occupied" },
+      { id: "B-202", block: "Block B", floor: 2, type: "3BHK", sqft: 1700, status: "Occupied" },
+      { id: "B-301", block: "Block B", floor: 3, type: "3BHK", sqft: 1700, status: "Under Maintenance" },
+      { id: "B-302", block: "Block B", floor: 3, type: "Penthouse", sqft: 2500, status: "Occupied" },
+      { id: "C-101", block: "Block C", floor: 1, type: "2BHK", sqft: 1300, status: "Occupied" },
+      { id: "C-102", block: "Block C", floor: 1, type: "2BHK", sqft: 1300, status: "Occupied" },
+      { id: "C-201", block: "Block C", floor: 2, type: "3BHK", sqft: 1800, status: "Occupied" },
+      { id: "C-202", block: "Block C", floor: 2, type: "3BHK", sqft: 1800, status: "Vacant" }
+    ];
+
+    const residents = [
+      { id: "RES001", name: "Arun Kumar", email: "arun.kumar@gmail.com", phone: "9842112345", unit: "A-101", type: "Owner", moveIn: "2024-01-15" },
+      { id: "RES002", name: "Priya Senthil", email: "priya.senthil@outlook.com", phone: "9842223456", unit: "A-102", type: "Owner", moveIn: "2024-02-10" },
+      { id: "RES003", name: "Rajesh K", email: "rajesh.k@yahoo.com", phone: "9842334567", unit: "A-201", type: "Tenant", moveIn: "2024-06-01" },
+      { id: "RES004", name: "Deepa Murugan", email: "deepa.m@gmail.com", phone: "9842445678", unit: "A-202", type: "Owner", moveIn: "2023-11-20" },
+      { id: "RES005", name: "Karthik Raja", email: "karthik.raja@hotmail.com", phone: "9842556789", unit: "A-301", type: "Owner", moveIn: "2023-08-05" },
+      { id: "RES006", name: "Sneha Lakshmi", email: "sneha.l@gmail.com", phone: "9842667890", unit: "B-101", type: "Tenant", moveIn: "2025-01-10" },
+      { id: "RES007", name: "Venkatesh Babu", email: "venky.babu@gmail.com", phone: "9842778901", unit: "B-102", type: "Owner", moveIn: "2024-04-12" },
+      { id: "RES008", name: "Meenakshi Sundaram", email: "meena.sundaram@gmail.com", phone: "9842889012", unit: "B-201", type: "Tenant", moveIn: "2024-07-25" },
+      { id: "RES009", name: "Gopalakrishnan V", email: "gopal.v@yahoo.com", phone: "9842990123", unit: "B-202", type: "Owner", moveIn: "2023-10-14" },
+      { id: "RES010", name: "Divya Bharathi", email: "divya.b@outlook.com", phone: "9842001234", unit: "B-302", type: "Owner", moveIn: "2023-09-01" },
+      { id: "RES011", name: "Suresh Babu", email: "suresh.b@gmail.com", phone: "9843112233", unit: "C-101", type: "Tenant", moveIn: "2024-12-01" },
+      { id: "RES012", name: "Anitha Radhakrishnan", email: "anitha.r@gmail.com", phone: "9843223344", unit: "C-102", type: "Owner", moveIn: "2024-03-18" },
+      { id: "RES013", name: "Balaji Subramanian", email: "balaji.subbu@gmail.com", phone: "9843334455", unit: "C-201", type: "Owner", moveIn: "2023-12-15" }
+    ];
+
+    const payments = [
+      { id: "PAY-2026-03-01", unit: "A-101", month: "2026-03", due: 3000, paid: 3000, dueDate: "2026-03-10", payDate: "2026-03-02", mode: "Online/UPI", status: "Paid" },
+      { id: "PAY-2026-03-02", unit: "A-102", month: "2026-03", due: 4000, paid: 0, dueDate: "2026-03-10", payDate: "-", mode: "Pending", status: "Pending" },
+      { id: "PAY-2026-03-03", unit: "A-201", month: "2026-03", due: 3000, paid: 0, dueDate: "2026-03-10", payDate: "-", mode: "Pending", status: "Pending" },
+      { id: "PAY-2026-03-04", unit: "A-202", month: "2026-03", due: 4000, paid: 4000, dueDate: "2026-03-10", payDate: "2026-03-05", mode: "Online/UPI", status: "Paid" },
+      { id: "PAY-2026-03-05", unit: "A-301", month: "2026-03", due: 5500, paid: 5500, dueDate: "2026-03-10", payDate: "2026-03-04", mode: "Credit Card", status: "Paid" },
+      { id: "PAY-2026-03-06", unit: "B-101", month: "2026-03", due: 2500, paid: 0, dueDate: "2026-03-10", payDate: "-", mode: "Pending", status: "Pending" },
+      { id: "PAY-2026-03-07", unit: "B-102", month: "2026-03", due: 3200, paid: 3200, dueDate: "2026-03-10", payDate: "2026-03-07", mode: "Net Banking", status: "Paid" },
+      { id: "PAY-2026-03-08", unit: "B-201", month: "2026-03", due: 3200, paid: 0, dueDate: "2026-03-10", payDate: "-", mode: "Pending", status: "Pending" },
+      { id: "PAY-2026-02-08", unit: "B-201", month: "2026-02", due: 3200, paid: 0, dueDate: "2026-02-10", payDate: "-", mode: "Pending", status: "Overdue" },
+      { id: "PAY-2026-02-11", unit: "C-101", month: "2026-02", due: 3300, paid: 0, dueDate: "2026-02-10", payDate: "-", mode: "Pending", status: "Overdue" }
+    ];
+
+    const complaints = [
+      { id: "CMP-2026-001", unit: "A-101", cat: "Water Supply", prio: "High", desc: "Low water pressure in kitchen faucet", date: "2026-01-04", staff: "Ramesh (Plumber)", status: "Resolved" },
+      { id: "CMP-2026-002", unit: "A-102", cat: "Electrical", prio: "Critical", desc: "Main corridor switchboard sparking", date: "2026-01-11", staff: "Senthil (Electrician)", status: "Resolved" },
+      { id: "CMP-2026-004", unit: "A-202", cat: "Elevator", prio: "High", desc: "Block A lift jerky motion", date: "2026-01-20", staff: "Schindler Team", status: "Resolved" },
+      { id: "CMP-2026-011", unit: "C-101", cat: "Water Supply", prio: "High", desc: "Water pump starter capacitor fault", date: "2026-03-05", staff: "Ramesh (Plumber)", status: "In Progress" },
+      { id: "CMP-2026-012", unit: "C-102", cat: "Electrical", prio: "Medium", desc: "Power fluctuation during evening peak", date: "2026-03-08", staff: "Senthil (Electrician)", status: "In Progress" },
+      { id: "CMP-2026-013", unit: "C-201", cat: "Cleanliness", prio: "Medium", desc: "Basement drainage smell near parking 45", date: "2026-03-12", staff: "Murugan (Housekeeping)", status: "In Progress" },
+      { id: "CMP-2026-014", unit: "A-101", cat: "Security", prio: "Medium", desc: "CCTV camera near entrance blurry", date: "2026-03-15", staff: "Security Agency Lead", status: "Open" },
+      { id: "CMP-2026-015", unit: "A-201", cat: "Elevator", prio: "High", desc: "Block A lift door sensor not detecting obstacle", date: "2026-03-16", staff: "Schindler Team", status: "Open" }
+    ];
+
+    function switchTab(tabId) {
+      document.querySelectorAll("main > section").forEach(sec => sec.classList.add("hidden"));
+      document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("tab-active"));
+      document.getElementById("section-" + tabId).classList.remove("hidden");
+      document.getElementById("tab-" + tabId).classList.add("tab-active");
+    }
+
+    function renderApartments(list) {
+      const container = document.getElementById("apartment-rows");
+      container.innerHTML = list.map(a => `
+        <tr class="hover:bg-slate-50 transition">
+          <td class="py-3 px-4 font-semibold text-slate-800">${a.id}</td>
+          <td class="py-3 px-4">${a.block}</td>
+          <td class="py-3 px-4">${a.floor}</td>
+          <td class="py-3 px-4 font-medium">${a.type}</td>
+          <td class="py-3 px-4">${a.sqft}</td>
+          <td class="py-3 px-4">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+              a.status === 'Occupied' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+              a.status === 'Vacant' ? 'bg-slate-100 text-slate-600 border border-slate-200' :
+              'bg-amber-50 text-amber-700 border border-amber-200'
+            }">${a.status}</span>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function filterApartments() {
+      const block = document.getElementById("filter-block").value;
+      if (block === "ALL") renderApartments(apartments);
+      else renderApartments(apartments.filter(a => a.block === block));
+    }
+
+    function renderResidents(list) {
+      const container = document.getElementById("resident-rows");
+      container.innerHTML = list.map(r => `
+        <tr class="hover:bg-slate-50 transition">
+          <td class="py-3 px-4 font-mono font-semibold text-blue-600">${r.id}</td>
+          <td class="py-3 px-4 font-semibold text-slate-800">${r.name}</td>
+          <td class="py-3 px-4 text-slate-600">${r.email}</td>
+          <td class="py-3 px-4 text-slate-600">${r.phone}</td>
+          <td class="py-3 px-4 font-bold text-slate-700">${r.unit}</td>
+          <td class="py-3 px-4">
+            <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${r.type === 'Owner' ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' : 'bg-teal-50 text-teal-700 border border-teal-200'}">${r.type}</span>
+          </td>
+          <td class="py-3 px-4 text-slate-500">${r.moveIn}</td>
+        </tr>
+      `).join("");
+    }
+
+    function searchResidents() {
+      const query = document.getElementById("search-resident").value.toLowerCase();
+      renderResidents(residents.filter(r => r.name.toLowerCase().includes(query) || r.unit.toLowerCase().includes(query)));
+    }
+
+    function renderPayments(list) {
+      const container = document.getElementById("payment-rows");
+      container.innerHTML = list.map(p => `
+        <tr class="hover:bg-slate-50 transition">
+          <td class="py-3 px-4 font-mono font-semibold text-slate-700">${p.id}</td>
+          <td class="py-3 px-4 font-bold text-slate-800">${p.unit}</td>
+          <td class="py-3 px-4">${p.month}</td>
+          <td class="py-3 px-4 font-semibold text-slate-900">₹${p.due.toLocaleString()}</td>
+          <td class="py-3 px-4 text-emerald-600 font-semibold">₹${p.paid.toLocaleString()}</td>
+          <td class="py-3 px-4 text-slate-500">${p.dueDate}</td>
+          <td class="py-3 px-4 text-slate-500">${p.payDate}</td>
+          <td class="py-3 px-4">${p.mode}</td>
+          <td class="py-3 px-4">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+              p.status === 'Paid' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+              p.status === 'Pending' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
+              'bg-rose-50 text-rose-700 border border-rose-200'
+            }">${p.status}</span>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function filterPayments(status) {
+      if (status === "ALL") renderPayments(payments);
+      else renderPayments(payments.filter(p => p.status === status));
+    }
+
+    function renderComplaints(list) {
+      const container = document.getElementById("complaint-rows");
+      container.innerHTML = list.map(c => `
+        <tr class="hover:bg-slate-50 transition">
+          <td class="py-3 px-4 font-mono font-semibold text-rose-600">${c.id}</td>
+          <td class="py-3 px-4 font-bold text-slate-800">${c.unit}</td>
+          <td class="py-3 px-4 font-medium text-slate-700">${c.cat}</td>
+          <td class="py-3 px-4">
+            <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-semibold ${
+              c.prio === 'Critical' ? 'bg-red-100 text-red-800' :
+              c.prio === 'High' ? 'bg-orange-100 text-orange-800' :
+              'bg-blue-100 text-blue-800'
+            }">${c.prio}</span>
+          </td>
+          <td class="py-3 px-4 text-slate-600 max-w-xs truncate">${c.desc}</td>
+          <td class="py-3 px-4 text-slate-500">${c.date}</td>
+          <td class="py-3 px-4 text-slate-700">${c.staff}</td>
+          <td class="py-3 px-4">
+            <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-semibold ${
+              c.status === 'Resolved' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+              c.status === 'In Progress' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
+              'bg-rose-50 text-rose-700 border border-rose-200'
+            }">${c.status}</span>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function openComplaintModal() {
+      const desc = prompt("Enter Complaint Description:");
+      if (!desc) return;
+      const cat = prompt("Category (Water Supply / Electrical / Cleanliness / Elevator / Security):", "Water Supply");
+      const unit = prompt("Apartment Unit ID (e.g. A-101):", "A-101");
+      const newId = "CMP-2026-" + Math.floor(100 + Math.random() * 900);
+      complaints.unshift({
+        id: newId,
+        unit: unit,
+        cat: cat || "Water Supply",
+        prio: "High",
+        desc: desc,
+        date: new Date().toISOString().split('T')[0],
+        staff: "Unassigned",
+        status: "Open"
+      });
+      renderComplaints(complaints);
+      alert("Complaint registered successfully! Ticket: " + newId);
+    }
+
+    // Initialize tables on load
+    document.addEventListener("DOMContentLoaded", () => {
+      renderApartments(apartments);
+      renderResidents(residents);
+      renderPayments(payments);
+      renderComplaints(complaints);
+    });
+  </script>
+</body>
+</html>
