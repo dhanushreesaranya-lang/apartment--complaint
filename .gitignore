@@ -1,0 +1,22 @@
+# Compiled Java binaries
+bin/
+*.class
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+.ipynb_checkpoints/
+
+# IDE configurations
+.vscode/
+.idea/
+*.iml
+*.swp
+
+# OS-generated files
+Thumbs.db
+Desktop.ini
+.DS_Store
